@@ -1,0 +1,52 @@
+{% set name = "recometrics" %}
+{% set version = "0.1.6.post10" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/recometrics-{{ version }}.tar.gz
+  sha256: 73b9a3e7c8206a31c94397bc9cc37b98eeb6b2df0cfc8bd0b34b81d95c0828ff
+
+build:
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  number: 0
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - cython >=3.0.0
+    - setuptools
+    - wheel
+    - numpy >=1.25
+    - scipy >=1.11.1
+    - pip
+  run:
+    - python
+    - scipy
+    - cython
+    - pandas
+    - {{ pin_compatible('numpy') }}
+
+test:
+  imports:
+    - recometrics
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/david-cortes/recometrics
+  summary: Library-agnostic evaluation framework for implicit-feedback recommender systems
+  license: BSD-2-Clause
+  license_file: LICENSE
+  doc_url: http://recometrics.readthedocs.io/
+
+extra:
+  recipe-maintainers:
+    - franzoni315
